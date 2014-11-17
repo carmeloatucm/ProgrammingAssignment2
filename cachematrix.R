@@ -6,11 +6,8 @@
   ### run x<<- matrix[[i ]] at the start of the loop.
 
 makeCacheMatrix <- function(x =matrix()){
-    
- 
-  
-  
   m <- NULL
+
   ### initially m starts as a NULL object, it will be tested later on
   ### if it has been calculated before 
 
@@ -58,6 +55,7 @@ cacheSolve<- function(x,...){
 
 ### In a for loop to calculate solve(matrix[[i]])
 ### we should operate these functions as
+### for(i in ...){
 ### x <<-matrix[[i]]
 ### matrixinv[[i]] <- cacheSolve(makeCacheMatrix(x))
-### 
+### }
