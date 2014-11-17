@@ -1,10 +1,13 @@
-makeCacheMatrix <- function(x =matrix()){
-    
-  ### before running cache matrix make sure you
-  ### dub the matrix you're introducing x 
+  ### before running cache matrix it is convenient to dub
+  ### the matrix you're introducing as x
+  ### making reference that it may be defined elsewhere
   ### for instance if you're using a for loop and 
   ### at each step you want to get the inverse of matrix[[i]]
   ### run x<<- matrix[[i ]] at the start of the loop.
+
+makeCacheMatrix <- function(x =matrix()){
+    
+ 
   
   
   m <- NULL
