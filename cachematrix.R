@@ -1,4 +1,4 @@
-  ### before running cache matrix it is convenient to dub
+  ### before running cache matrix it may be convenient to dub
   ### the matrix you're introducing as x
   ### making reference that it may be defined elsewhere
   ### for instance if you're using a for loop and 
@@ -6,56 +6,46 @@
   ### run x<<- matrix[[i ]] at the start of the loop.
 
 makeCacheMatrix <- function(x =matrix()){
-  m <- NULL
-
-  ### initially m starts as a NULL object, it will be tested later on
-  ### if it has been calculated before 
-
+  data <- NULL
+  ### initially the data starts as a NULL object, it will be tested and cached later on
+  
   set <- function(y){
-      x <<-y
-      m<<-NULL
-    }  
-  ### this function takes a matrix and calls it x
-  ### and yields m if m is properly defined elsewhere is not NULL
-    
+    x <<-y
+    data<<-NULL
+  }  
+    ### this function takes a matrix and calls it x
+    ### and yields data if data is properly defined elsewhere is not NULL
   get <- function( ) x
-  ### this function presents the matrix x that yields the 
-  ### argument defined by ther function set
-    
-  setinv <- function(solve) m <<- solve
-  ### takes the solve funtion to get the inverse matrix
-    
-  getinv <- function() m
-  ### yields the object m, the inverse of x as defined by 
-  ### the function set
-  
-  ### The outcome is a list of functions that are used to get a
-  ### cache to be tested later on
-  
-  list(set=set, get=get,setinv=setinv,getinv=getinv)
-}
+    ### this function presents the matrix x that yields the 
+    ### argument to be tested with the data defined  by ther function set
+  setinverse <- function(solve) inverse <<- solve
+    ### takes the solve funtion to get the inverse matrix
+  getinverse <- function() inverse
+    ### yields the functions that gets the inverse matrix 
+  list(set=set, get=get,setinverse=setinverse,getinverse=getinverse)
+    ### The outcome is a list of functions that are used to get a
+    ### cache to be tested later on
+  }
 
-### the next function gets the inverse of a matrix after checking 
-### whether it has been already calculated and in the cache.
+
 
 cacheSolve<- function(x,...){
-  m <- x$getinv()
-  #### have we already calculated m?
-  if(!is.null(m)){
-        message("getting cached data")
-        return(m)
+  inverse <-x$getinverse()
+      ### gets the inverse matrix from the cached matrix if any defined
+  if(!is.null(inverse) & identical(x$set,x$get)==TRUE){
+    message("getting cached data")
+    return(inverse)
   }
-  ### if we already have it, we get it from cache,
-  ### if not we proceed to define it and introduce it in the cache
+      ### checks whether the input matrix and the cached matrix are identical
+      ### and whether the inverse has been already calculated
+      ### if both ifs are positive, the inverse matrix is returned
+      ### if negative the function proceeds to get the inverse from input matrix
+      
   data <- x$get()
-  m <- solve(data)
-  x$setinv(m)
-  m
+  inverse <- solve(data)
+  x$setinverse(inverse)
+  x$set(data)
+      ### and gets the input matrix and its inverse matrix to the cache 
+  inverse
+  
 }
-
-### In a for loop to calculate solve(matrix[[i]])
-### we should operate these functions as
-### for(i in ...){
-### x <<-matrix[[i]]
-### matrixinv[[i]] <- cacheSolve(makeCacheMatrix(x))
-### }
