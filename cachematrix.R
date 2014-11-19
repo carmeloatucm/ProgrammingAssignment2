@@ -7,6 +7,7 @@
 
 makeCacheMatrix <- function(x =matrix()){
   data <- NULL
+  inverse <- NULL
   ### initially the data starts as a NULL object, it will be tested and cached later on
   
   set <- function(y){
